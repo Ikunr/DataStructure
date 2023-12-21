@@ -1,7 +1,7 @@
 #ifndef __DOUBLELINKLIST_H__
 #define __DOUBLELINKLIST_H__
 
-#define ELEMENTTYPE int
+#define ELEMENTTYPE void*
 
 
 typedef struct Node
@@ -36,10 +36,10 @@ int insertLinkListIndex(LinkList *list, ELEMENTTYPE element,int index);
 int removeLinkListIndex(LinkList *list, int index);
 
 /* 按值删除 */
-int removeLinkListElement(LinkList *pList, ELEMENTTYPE element);
+int removeLinkListElement(LinkList *pList, ELEMENTTYPE element, int (*deleteIndex)(ELEMENTTYPE, ELEMENTTYPE));
 
 /* 按值查找 */
-int * findLinkListElement(LinkList *pList,ELEMENTTYPE element);
+int * findLinkListElement(LinkList *pList,ELEMENTTYPE element, int (*deleteIndex)(ELEMENTTYPE, ELEMENTTYPE));
 
 /* 获取链表的长度 */
 int getLinkListLen(LinkList *pList);
@@ -48,10 +48,10 @@ int getLinkListLen(LinkList *pList);
 int changeIndexLinkList(LinkList *pList, int index, ELEMENTTYPE element);
 
 /* 打印 */
-int printLinkListValue(LinkList *list);
+int printLinkListValue(LinkList *list, int (*printCall)(ELEMENTTYPE));
 
 /* 释放链表 */
-void freeLinkList(LinkList *pList);
+//int freeLinkList(LinkList *pList);
 
 
 

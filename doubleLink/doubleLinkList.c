@@ -277,12 +277,12 @@ int removeLinkListIndex(LinkList *list, int index)
     return ret;
 }
 
-int removeLinkListElement(LinkList *pList, ELEMENTTYPE element)
+int removeLinkListElement(LinkList *pList, ELEMENTTYPE element, int (*deleteIndex)(ELEMENTTYPE, ELEMENTTYPE))
 {
     int ret = 0;
     CHECK_PTR(pList);
 
-    int * findArray = findLinkListElement(pList,element);
+    int * findArray = findLinkListElement(pList, element, deleteIndex);
     
     int idx = 1;
     int pos = findArray[idx];
@@ -297,7 +297,7 @@ int removeLinkListElement(LinkList *pList, ELEMENTTYPE element)
     return ret;
 }
 
-int* findLinkListElement(LinkList *pList, ELEMENTTYPE element)
+int* findLinkListElement(LinkList *pList, ELEMENTTYPE element, int (*deleteIndex)(ELEMENTTYPE, ELEMENTTYPE))
 {
     CHECK_PTR(pList);
 
@@ -310,7 +310,8 @@ int* findLinkListElement(LinkList *pList, ELEMENTTYPE element)
     Node * travelPoint = pList->head;
     while(travelPoint != NULL)
     {
-        if(travelPoint->data == element)
+        if(deleteIndex(travelPoint->data, element))
+        //if(travelPoint->data == element)
         {
             findCountNum++;
         }
@@ -341,7 +342,8 @@ int* findLinkListElement(LinkList *pList, ELEMENTTYPE element)
     Node * travelPoint_index = pList->head;
     while(travelPoint_index != NULL)
     {
-        if(travelPoint_index->data == element)
+        if(deleteIndex(travelPoint_index->data, element))
+        //if(travelPoint_index->data == element)
         {
             newPoint[findCountNum] = index;
             findCountNum++;
@@ -393,30 +395,32 @@ int changeIndexLinkList(LinkList *pList, int index, ELEMENTTYPE element)
 }
 
 /* 打印函数 */
-void printLinkListValue(LinkList *list)
+int printLinkListValue(LinkList *list, int (*printCall)(ELEMENTTYPE))
 {
     CHECK_PTR(list);
     
     struct Node * travlePoint = list->head;
     while(travlePoint != NULL)
     {
-        printf(" %d", travlePoint->data);
+        printCall(travlePoint->data);
+        //printf(" %d", travlePoint->data);
         travlePoint = travlePoint->next;
+
     }
 
     printf("\n");
 }
 
-int freeLinkList(LinkList *pList)
-{
-    int ret = 0;
-    CHECK_PTR(pList);
+// int freeLinkList(LinkList *pList)
+// {
+//     int ret = 0;
+//     CHECK_PTR(pList);
 
-    Node * travelPoint = pList->head;
+//     Node * travelPoint = pList->head;
 
-    while(travelPoint != NULL)
-    {
-        removeLinkListIndex(travelPoint, 0);
-    }
-    return ret;
-}
+//     while(travelPoint != NULL)
+//     {
+//         removeLinkListIndex(travelPoint, 0);
+//     }
+//     return ret;
+// }
