@@ -1,129 +1,91 @@
-#include <stdlib.h>
 #include <stdio.h>
 #include "linkList.h"
-#include <pthread.h>
+#include <string.h>
 
-#define linkList_NUM 3
+#define BUFFER_SIZE    3
 
 
-typedef struct StuInfo
+typedef struct stuInfo
 {
     int age;
     char sex;
-    
-} StuInfo;      // 28字节
+} stuInfo; 
 
-void printStruct(void *arg)
+
+/* 自定义打印 */
+int printStruct(void *arg)
 {
-    StuInfo *info = (StuInfo*)arg;
-    printf("info->age:%d\tinfo->sex:%c\n", info->age, info->sex);
-    return;
+    stuInfo *info = (stuInfo*)arg;
+    printf("age:%d\t, sex:%c\n", info->age, info->sex);
 }
 
+int printBasicData(void *arg)
+{
+    int data = *(int *)arg;
+    printf("data:%d\n", data);
+}
 int main()
 {
-    linkList *list = NULL;
-    linkListInit(&list);
-
 #if 0
-    int ret = 0;
-    /* 头插 */
-    for (int idx = 1; idx < linkList_NUM; idx++)
-    {
-        ret = linkListHeadInsert(list, idx);
-        if (ret != ON_SUCCESS)
-        {
-            printf("ret:%d\n", ret);
-        }
-    }
-    /* 按指定位置插入 */
-    ret = linkListAppointPosInsert(list, 2, 666);
-
-    int length = 0;
-    for (int idx = 100; idx <= 100 + linkList_NUM; idx++)
-    {
-        linkListTailInsert(list, idx);
-        if (ret != ON_SUCCESS)
-        {
-            printf("ret:%d\n", ret);
-        }
-    }
-    linkListForeach(list, printStruct);
-
-    int linkLen = 0;
-    linkListGetLength(list, &linkLen);
-    printf("len:%d\n", linkLen);
+    /* strcpy第一个参数是传出参数 并返回值也是直线dst的地址的. */
+    char buffer[BUFFER_SIZE] = {0};
+    char *ptr = strcpy(buffer, "zhangsan");
+    printf("buffer:%s\n", buffer);
+    printf("ptr:%s\n", ptr);
 #endif
 
 #if 0
-    /* 尾删 */
-    linkListTailDel(list);
-    linkListForeach(list);
-    linkListGetLength(list, &linkLen);
-    printf("len:%d\n", linkLen);
-
-    /* 头删 */
-    linkListHeadDel(list);
-    linkListForeach(list);
-    linkListGetLength(list, &linkLen);
-    printf("len:%d\n", linkLen);
+    /* snmp */
+    /* 华润电力 */
 #endif
+
+    LinkList *list = NULL;
+    /* 初始化链表 */
+    LinkListInit(&list);
 
 #if 1
-
-
-    StuInfo stu1;
-    StuInfo stu2;
-    StuInfo stu3;
-    // memset(&stu1, 0, sizeof(stu1));
-    // memset(&stu2, 0, sizeof(stu2));
-    // memset(&stu3, 0, sizeof(stu3));
-
-    /* 模块化初始化 */
-#if 1
+    int buffer[BUFFER_SIZE] = {1, 2, 3};
+    /* 插入数据 */
+    for (int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        stu1.age = 10;
-        stu1.sex = 'm';
+        LinkListHeadInsert(list, (void *)&buffer[idx]);
     }
-#endif
+    
+    /* 获取链表的长度 */
+    int size = 0;
+    LinkListGetLength(list, &size);
+    printf("size:%d\n", size);
 
-#if 1
-    /* 模块化初始化 */
+    LinkListForeach(list, printBasicData);
+#else
+    stuInfo stu1, stu2, stu3;
+    memset(&stu1, 0, sizeof(stu1));
+    memset(&stu2, 0, sizeof(stu2));
+    memset(&stu3, 0, sizeof(stu3));
+
+    stu1.age = 10;
+    stu1.sex = 'm';
+
+    stu2.age = 20;
+    stu2.sex = 'f';
+
+    stu3.age = 30;
+    stu3.sex = 'm';
+
+    stuInfo buffer[BUFFER_SIZE] = {stu1, stu2, stu3};
+
+    for (int idx = 0; idx < BUFFER_SIZE; idx++)
     {
-        stu2.age = 20;
-        stu2.sex = 'f';
+        LinkListHeadInsert(list, (void *)&buffer[idx]);
     }
+    
+    /* 获取链表的长度 */
+    int size = 0;
+    LinkListGetLength(list, &size);
+    printf("size:%d\n", size);
+
+    /* 遍历 */
+    LinkListForeach(list, printStruct);
 #endif
-
-#if 1
-    /* 模块化初始化 */
-    {
-        stu3.age = 30;
-        stu3.sex = 'm';
-    }
-#endif
-
-    /* 结构体数组 */
-    StuInfo buffer[linkList_NUM] = {stu1, stu2, stu3};
-
-    int ret = 0;
-    /* 头插 */
-    for (int idx = 1; idx < linkList_NUM; idx++)
-    {
-        ret = linkListHeadInsert(list, (void *)&(buffer[idx]));
-        if (ret != ON_SUCCESS)
-        {
-            printf("ret:%d\n", ret);
-        }
-    }
-    int len = 0;
-    linkListGetLength(list, &len);
-    printf("len:%d\n", len);
-
-    /* 遍历操作 */
-    linkListForeach(list, printStruct);
-
-#endif
-    /* 链表销毁 */
-    linkListDestroy(list);
+    return 0;
 }

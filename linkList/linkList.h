@@ -2,66 +2,57 @@
 #define __LINKLIST_H_
 
 
-#if 1
 #define ELEMENTTYPE void*
-#else
-typedef int ELEMENTTYPE;
-#endif
 
-
-/* 状态码 */
-enum STATUSCODE
+/* 链表结点取别名 */
+typedef struct LinkNode
 {
-    ON_SUCCESS,
-    NULL_PTR,
-    MALLOC_ERR,
-    INVAILD_ACCESS,
-};
+    ELEMENTTYPE data;
+    /* 指向下一个结点的指针 */
+    struct LinkNode *next;   /* 指针的类型为什么是结点 */
+} LinkNode;
 
-typedef struct node
+/* 链表 */
+typedef struct LinkList
 {
-    ELEMENTTYPE val;                /* 数据 */
-    struct node * next;     /* 指针 */
-} Node;
-
-typedef struct linkList
-{
-    Node *head;
+    /* 链表的虚拟头结点 */
+    LinkNode * head;
+    LinkNode * tail;        /* 为什么尾指针不需要分配空间??? */
+    /* 链表的长度 */
     int len;
-} linkList;
+} LinkList;
 
-/* 链表的初始化 */
-int linkListInit(linkList **pList);
+/* 链表初始化 */
+int LinkListInit(LinkList **pList);
 
-/* 头插 */
-int linkListHeadInsert(linkList *pList, ELEMENTTYPE val);
+/* 链表头插 */
+int LinkListHeadInsert(LinkList * pList, ELEMENTTYPE val);
 
-/* 尾插 */
-int linkListTailInsert(linkList *pList, ELEMENTTYPE val);
+/* 链表尾插 */
+int LinkListTailInsert(LinkList * pList, ELEMENTTYPE val);
 
-/* 指定位置插入 */
-int linkListAppointPosInsert(linkList *pList, int pos, ELEMENTTYPE val);
+/* 链表指定位置插入 */
+int LinkListAppointPosInsert(LinkList * pList, int pos, ELEMENTTYPE val);
 
-/* 获取链表的数据 */
-int linkListGetLength(linkList *pList, int *pLen);
+/* 链表头删 */
+int LinkListHeadDel(LinkList * pList);
 
-/* 遍历链表 */
-int linkListForeach(linkList *pList, void (*printCallback)(void *arg));
+/* 链表尾删 */
+int LinkListTailDel(LinkList * pList);
 
-/* 头删 */
-int linkListHeadDel(linkList *pList);
+/* 链表指定位置删 */
+int LinkListDelAppointPos(LinkList * pList, int pos);
 
-/* 尾删 */
-int linkListTailDel(linkList *pList);
+/* 链表删除指定的数据 */
+int LinkListDelAppointData(LinkList * pList, ELEMENTTYPE val, int (*campareFunc)(ELEMENTTYPE, ELEMENTTYPE));
 
-/* 按指定位置删除 */
-int linkListAppointPosDel(linkList *pList, int pos);
+/* 获取链表的长度 */
+int LinkListGetLength(LinkList * pList, int *pSize);
 
-/* 链表销毁 */
-int linkListDestroy(linkList *pList);
+/* 链表的销毁 */
+int LinkListDestroy(LinkList * pList);
 
-/* 链表删除指定数据 */
-int linkListAppointValDel(linkList *pList, ELEMENTTYPE val);
+/* 链表遍历接口 */
+int LinkListForeach(LinkList * pList, int (*printFunc)(ELEMENTTYPE));
 
-
-#endif  //__LINKLIST_H_
+#endif
