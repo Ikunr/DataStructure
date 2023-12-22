@@ -152,11 +152,13 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList * pList, int pos, ELEMENTTYPE 
             travelNode = travelNode->next;
             pos--;
         }
+        /* !!!!! 🐂 */
+        travelNode->next->prev = newNode;        // 3
     }
     newNode->next = travelNode->next;        // 1
     newNode->prev = travelNode;              // 2
-    travelNode->next->prev = newNode;        // 3
     travelNode->next = newNode;              // 4
+
     if (flag)
     {
         /* 尾指针更新位置 */
