@@ -25,7 +25,7 @@ static BSTreeNode* createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *pParent);
 static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
 /* 二叉搜索树的初始化 */
-int binarySearchTreeInit(BinarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2))
+int binarySearchTreeInit(BinarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2), int (*printfFunc)(ELEMENTTYPE val))
 {
     int ret = 0;
     BinarySearchTree *BSTree = (BinarySearchTree *)malloc(sizeof(BSTreeNode) * 1);
@@ -65,6 +65,8 @@ int binarySearchTreeInit(BinarySearchTree **pBstree, int (*compareFunc)(ELEMENTT
         BSTree->size = 0;
         /* 钩子函数在这边赋值 */
         BSTree->compareFunc = compareFunc;
+        /* 钩子函数包装器 自定义打印  */
+        BSTree->printfFunc = printfFunc;
     }
 #endif
 
@@ -278,7 +280,11 @@ int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
     while(!doubleLinkListQueueIsEmpty(queue))
     {
         doubleLinkListQueueTop(queue, (void **)&nodeVal);
+#if 0
         printf("%d\n", nodeVal->data);
+#else
+        pBstree->printfFunc(nodeVal->data);
+#endif
         doubleLinkListQueuePop(queue);
 
         /* 将左子树入队 */
@@ -293,7 +299,7 @@ int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
             doubleLinkListQueuePush(queue, nodeVal->right);
         }
     }
-    
+
     /* 释放队列 */
     doubleLinkListQueueDestroy(queue);
 
