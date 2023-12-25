@@ -3,6 +3,7 @@
 
 #define ELEMENTTYPE int 
 
+
 typedef struct BSTreeNode
 {
     ELEMENTTYPE data;
@@ -24,6 +25,7 @@ typedef struct BinarySearchTree
 
     /* 钩子函数比较器 放到结构体内部 */
     int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2);
+    
 } BinarySearchTree;
 
 

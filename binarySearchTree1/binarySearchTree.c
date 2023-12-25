@@ -1,6 +1,10 @@
 #include "binarySearchTree.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
+#include "doubleLinkListQueue.h"
+
 
 /* 状态码 */
 enum STATUS_CODE
@@ -75,7 +79,7 @@ static BSTreeNode* createBSTreeNewNode(ELEMENTTYPE val, BSTreeNode *pParent)
     BSTreeNode * newBstNode = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
     if (!newBstNode)
     {
-        return MALLOC_ERROR;
+        return NULL;
     }
     /* 清除脏数据 */
     memset(newBstNode, 0, sizeof(BSTreeNode) * 1);
@@ -231,8 +235,7 @@ static BSTreeNode * baseAppointValGetBSTreeNode(BinarySearchTree *pBstree, ELEME
 /* 二叉搜索树是否包含某个元素*/
 int binarySearchTreeIsContainAppointVal(BinarySearchTree *pBstree, ELEMENTTYPE val)
 {
-    
-    return 0;
+    return baseAppointValGetBSTreeNode(pBstree, val) == NULL ? 0 : 1;
 }
 
 /* 二叉搜索树的前序遍历 */
@@ -256,5 +259,61 @@ int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree)
 /* 二叉搜索树的层序遍历 */
 int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
 {
+    int ret = 0;
+    if (!pBstree)
+    {
+        return -1;
+    }
+    /* 算法 */
 
+    /* 初始化一个队列 */
+    DoubleLinkListQueue *queue = NULL;
+    doubleLinkListQueueInit(&queue);
+    
+    /* 将根结点入队 */
+    doubleLinkListQueuePush(queue, pBstree->root);
+
+    /* 2. 判断队列是否为空 */
+    BSTreeNode *nodeVal = NULL;
+    while(!doubleLinkListQueueIsEmpty(queue))
+    {
+        doubleLinkListQueueTop(queue, (void **)&nodeVal);
+        printf("%d\n", nodeVal->data);
+        doubleLinkListQueuePop(queue);
+
+        /* 将左子树入队 */
+        if (nodeVal->left != NULL)
+        {
+            doubleLinkListQueuePush(queue, nodeVal->left);
+        }
+
+        /* 将右子树入队 */
+        if (nodeVal->right != NULL)
+        {
+            doubleLinkListQueuePush(queue, nodeVal->right);
+        }
+    }
+    
+    /* 释放队列 */
+    doubleLinkListQueueDestroy(queue);
+
+    return ret;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
