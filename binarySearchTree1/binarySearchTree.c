@@ -52,9 +52,59 @@ int binarySearchTreeInit(BinarySearchTree **pBstree)
     *pBstree = BSTree; 
     return ret;
 }
-
+                                        
 /* 二叉搜索树的插入 */
-int binarySearchTreeInsert(BinarySearchTree **pBstree, ELEMENTTYPE val)
+int binarySearchTreeInsert(BinarySearchTree *pBstree, ELEMENTTYPE val)
 {
+    int ret = 0;
+
+    /* 空树*/
+    if (pBstree->size == 0)
+    {   
+        /* 更新树的节点 */
+        pBstree->root->data = val;
+
+        (pBstree->size)++;
+        return ret;
+    }
+
+    /* 标记根节点的位置 travelNode指向根节点 */
+    BSTreeNode * travelNode = pBstree->root;
+
+    BSTreeNode * parentNode = pBstree->root;
+
+    /* 比较传入的值 确定符号 ：到底放在左边还是右边 */
+    int cmp = 0;
+
+    while (travelNode != NULL)
+    {
+        /* 标记父节点 */
+        parentNode = travelNode;
+        cmp = val - travelNode->data;
+        /* 插入元素 < 遍历到的节点 */
+        if (cmp < 0)
+        {
+            travelNode = travelNode->left;
+        }
+        else if(cmp > 0)     /* 插入元素 > 遍历到的节点 */
+        {
+            travelNode = travelNode->right;
+        }
+        else                                
+        {
+            /* 插入元素 = 遍历到的节点 */  
+            return ret;
+        }
+    }
+
+    if (cmp < 0)
+    {
+        parentNode->left = (val的节点);
+    }
+    else
+    {
+        parentNode->right = (val的节点);
+    }
+
 
 }
