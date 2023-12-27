@@ -542,7 +542,7 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
     /* 假设node结点时度为1 他的child要么是左 要么是右  */
     /* 假设node结点是度为0 */
     BSTreeNode * childNode = node->left != NULL ? node->left : node->right;
-    
+    BSTreeNode * deleteNode = NULL;
     if (childNode)
     {
         /* 度为1 */
@@ -554,12 +554,15 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
         {
             pBstree->root = childNode;
 
+#if 0
             /* 释放结点 */
             if (node)
             {
                 free(node);
                 node = NULL;
             }
+#endif
+            deleteNode = node;
         }
         else
         {
@@ -571,16 +574,19 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
             {
                 node->parent->right = childNode;
             }
+
+#if 0
             if (node)
             {
                 free(node);
                 node = NULL;
             }
+#endif
+            deleteNode = node;
         }
     }
     else
     {
-        
         /* 度为0 */
         if (node == node->parent->left)
         {
@@ -590,9 +596,16 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
         {
             node->parent->right = NULL;
         }
+
+        deleteNode = node;
+    }
+    
+    if (deleteNode)
+    {
+        free(deleteNode);
+        deleteNode = NULL;
     }
 
-    
     /* 树的结点减1 */
     pBstree->size--;
 
