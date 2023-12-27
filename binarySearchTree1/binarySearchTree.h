@@ -1,8 +1,8 @@
 #ifndef __BINARYSEARCHTREE_H_
 #define __BINARYSEARCHTREE_H_
 
-#define ELEMENTTYPE int 
-
+// #define ELEMENTTYPE int 
+#include "common.h"
 
 typedef struct BSTreeNode
 {
@@ -61,6 +61,9 @@ int binarySearchTreeDelete(BinarySearchTree *pBstree, ELEMENTTYPE val);
 
 /* 二叉搜索树的销毁 */
 int  binarySearchTreeDestroy(BinarySearchTree *pBstree);
+
+/* 判断二叉搜索是否是平衡二叉树 */
+int binarySearchTreeIsComplete(BinarySearchTree *pBstree);
 
 
 

@@ -39,8 +39,7 @@ static BSTreeNode * bstreeNodePreDEcessor(BSTreeNode *node);
 /* 获取当前节点的后继节点 */
 static BSTreeNode * bstreeNodeSuccessor(BSTreeNode *node);
 /* 删除指定结点 */
-static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node);
-
+static int binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node);
 
 
 
@@ -477,7 +476,7 @@ int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight)
     DoubleLinkListQueue * pQueue = NULL;
     doubleLinkListQueueInit(&pQueue);
 
-    doubleLinkListQueuePush(pBstree, pBstree->root);
+    doubleLinkListQueuePush(pQueue, pBstree->root);
     /* 树的高度（ 根节点入队高度为1 ）*/
     int height = 0;
     /* 树的每一层结点的数量 */
@@ -518,7 +517,7 @@ int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight)
 
 }
 
-static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
+static int binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
 {
     int ret = 0;
     if (node == NULL)
@@ -526,7 +525,6 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
         return ret;
     }
     
-
     if (binarySearchTreeNodeHasTwoChildren(node))
     {
         /* 找到前驱节点 */
@@ -546,7 +544,6 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
     if (childNode)
     {
         /* 度为1 */
-
         childNode->parent = node->parent;
 
         /* 如果是根节点 */
@@ -574,7 +571,6 @@ static binarySearchTreeDeleteNode(BinarySearchTree *pBstree, BSTreeNode * node)
             {
                 node->parent->right = childNode;
             }
-
 #if 0
             if (node)
             {
@@ -640,7 +636,7 @@ int  binarySearchTreeDestroy(BinarySearchTree *pBstree)
     DoubleLinkListQueue * pQueue = NULL;
     doubleLinkListQueueInit(&pQueue);
 
-    doubleLinkListQueuePush(pBstree, pBstree->root);
+    doubleLinkListQueuePush(pQueue, pBstree->root);
 
     BSTreeNode * travleNode = NULL;
 
@@ -677,4 +673,10 @@ int  binarySearchTreeDestroy(BinarySearchTree *pBstree)
         pBstree = NULL;
     }
     return ret;
+}
+
+/* 判断二叉搜索是否是平衡二叉树 */
+int binarySearchTreeIsComplete(BinarySearchTree *pBstree)
+{
+
 }
