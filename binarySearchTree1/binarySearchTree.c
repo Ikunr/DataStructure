@@ -100,6 +100,7 @@ static int binarySearchTreeNodeHasOneChildren(BSTreeNode * node)
 {
     return ((node->left == NULL) && (node->right != NULL)) || ((node->left != NULL) && (node->right == NULL));
 }
+
 /* 判断二叉搜索树度为0 */
 static int binarySearchTreeNodeIsLeaf(BSTreeNode * node)
 {
@@ -109,28 +110,53 @@ static int binarySearchTreeNodeIsLeaf(BSTreeNode * node)
 /* 获取当前节点的前驱节点 */
 static BSTreeNode * bstreeNodePreDEcessor(BSTreeNode *node)
 {
-    /* 度为2 */
-    if (binarySearchTreeNodeHasTwoChildren(node))
+
+    if (node->left != NULL)
     {
-        /* 度为2 一定在左子树的右子树右子树 */
+        /* 度为 一定在左子树的右子树右子树 */
         BSTreeNode * travelNode = node->left;
         while(travelNode->right != NULL)
         {
             travelNode = travelNode->right;
         }
         return travelNode;
+    
+    }          
+    /* 程序到这个地方说明一定没有左子树 那就需要向父节点找 */
+    while(node->parent != NULL && node == node->parent->left)
+    {
+        node =  node->parent;
     }
-
-    /* 程序到这个地方一定是度为1 或者 度为0的 */
-    /* 度为1 */
-
-
-    /* 度为0 */
+    /* node->parent == NULL */
+    /* node == node->parent->right */
+    return node->parent;
 }
 
 /* 获取当前节点的后继节点 */
 static BSTreeNode * bstreeNodeSuccessor(BSTreeNode *node)
 {
+    if (node->right != NULL)
+    {
+        /* 程序一定在右子树的左边的左边 */
+        BSTreeNode * travelNode = node->right;
+        while(travelNode->left != NULL)
+        {
+            travelNode = travelNode->left;
+        }
+
+        return travelNode;
+    }
+
+    /* 程序执行到这说明一定没有右子树 那就需要向父结点找 */
+    while(node->parent != NULL && node == node->parent->right)
+    {
+        node = node->parent;
+    }
+    /* 终止条件 */
+    /* node->parent == NULL */
+    /* node == node->parent->left */
+
+    return node->parent;
 
 }
 
@@ -308,7 +334,7 @@ static int preOrderTravel(BinarySearchTree *pBstree, BSTreeNode * node)
     
     if (node == NULL)
     {
-        return ret;
+        return ret;                  
     }
     /* 跟结点 */
     pBstree->printfFunc(node->data);
