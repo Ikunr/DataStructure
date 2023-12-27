@@ -51,7 +51,7 @@ int binarySearchTreeInOrderTravel(BinarySearchTree *pBstree);
 int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree);
 
 /* 二叉搜索树的层序遍历 */
-int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree);
+int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree);    
 
 /* 获取二叉搜索树的高度 */
 int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight);
