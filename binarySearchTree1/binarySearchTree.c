@@ -430,12 +430,60 @@ int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree)
 }
 
 /* 获取二叉搜索树的高度 */
-int binarySearchTreeGetHeight(BinarySearchTree *pBstree)
+int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight)
 {
+    if (!pBstree)
+    {
+        return NULL_PTR;
+    }
+
     int ret = 0;
+    /* 判断是否为空树 */
+    if (pBstree->size == 0)
+    {
+        return 0;
+    }
 
-     
+    DoubleLinkListQueue * pQueue = NULL;
+    doubleLinkListQueueInit(&pQueue);
 
+    doubleLinkListQueuePush(pBstree, pBstree->root);
+    /* 树的高度（ 根节点入队高度为1 ）*/
+    int height = 0;
+    /* 树的每一层结点的数量 */
+    int leaveSize = 1;
+
+    BSTreeNode * newNode = NULL;
+
+
+    while(!doubleLinkListQueueIsEmpty(pQueue))
+    {
+        doubleLinkListQueueTop(pQueue, (void **)&newNode);
+        doubleLinkListQueuePop(pQueue);
+        leaveSize--;
+
+        /* 左子树不为空 入队 */
+        if (newNode->left != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, newNode->left);
+        }
+        /* 右子树不为空 入队 */
+        if (newNode->right != NULL)
+        {
+            doubleLinkListQueuePush(pQueue, newNode->right);
+        }
+        /* 树的当前层结点遍历结束 */
+        if (leaveSize == 0)
+        {
+            height++;
+            doubleLinkListQueueGetSize(pQueue, &leaveSize);
+        }
+    }   
+
+    /* 解引用 */
+    *pHeight = height;
+
+    /* 释放队列 */
     return ret;
 
 }

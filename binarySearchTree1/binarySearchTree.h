@@ -10,10 +10,10 @@ typedef struct BSTreeNode
     struct BSTreeNode *left;        /* 左子树*/
     struct BSTreeNode *right;       /* 右子树*/
 
-    #if 1
+#if 1
     struct BSTreeNode *parent;      /* 父节点 */           
      
-    #endif 
+#endif 
 } BSTreeNode;
 
 typedef struct BinarySearchTree
@@ -54,7 +54,7 @@ int binarySearchTreePostOrderTravel(BinarySearchTree *pBstree);
 int binarySearchTreeLevelOrderTravel(BinarySearchTree *pBstree);
 
 /* 获取二叉搜索树的高度 */
-int binarySearchTreeGetHeight(BinarySearchTree *pBstree);
+int binarySearchTreeGetHeight(BinarySearchTree *pBstree, int *pHeight);
 
 /* 二叉搜索树的删除 */
 int binarySearchTreeDelete(BinarySearchTree *pBstree, ELEMENTTYPE val);
