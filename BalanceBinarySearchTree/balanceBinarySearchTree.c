@@ -59,6 +59,10 @@ static int maxAVKTreeNodeHeight(int val1, int val2);
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNode *node);
 /* 获取AVL结点较高的子结点 */
 static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node);
+/* 当前结点是父节点的左子树 */
+static int AVLTreeCurrentNodeIsLetf(AVLTreeNode *node);
+/* 当前结点是父节点的右子树 */
+static int AVLTreeCurrentNodeIsRight(AVLTreeNode *node);
 
 
 
@@ -163,16 +167,29 @@ static AVLTreeNode * AVLTreeNodeGetChildTaller(AVLTreeNode * node)
     }
     else
     {
-        if (node->parent != NULL && node == node->parent->left)
+        //if (node->parent != NULL && node == node->parent->left)
+        if (AVLTreeCurrentNodeIsLetf(node))
         {
             return node->left;
         } 
-        else
+        else if (AVLTreeCurrentNodeIsRight(node))
         {
             return node->right;
         }
     }
 
+}
+
+/* 当前结点是父节点的左子树 */
+static int AVLTreeCurrentNodeIsLetf(AVLTreeNode *node)
+{
+    return (node->parent != NULL) && (node == node->parent->left);
+}
+
+/* 当前结点是父节点的右子树 */
+static int AVLTreeCurrentNodeIsRight(AVLTreeNode *node)
+{
+    return (node->parent != NULL) && (node == node->parent->right);
 }
 
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
@@ -182,24 +199,24 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree, AVLTreeNod
     AVLTreeNode * child = AVLTreeNodeGetChildTaller(parent);
 
     /* L */ 
-    if (parent = node->left)
+    if (AVLTreeCurrentNodeIsLetf(parent))
     {
-        if (child == parent->left)
+        if (AVLTreeCurrentNodeIsLetf(child))
         {
             /* LL */
         }
-        else
+        else if (AVLTreeCurrentNodeIsRight(child))
         {
             /* LR */
         }
     }
     else
     {
-        if (child == parent->left)
+        if (AVLTreeCurrentNodeIsLetf(child))
         {
             /* RL */
         }
-        else
+        else if (AVLTreeCurrentNodeIsRight(child))
         {
             /* RR  */
         }
@@ -665,7 +682,7 @@ int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree *pBstree, int *pHei
 
     /* 释放队列的空间 */
     doubleLinkListQueueDestroy(pQueue);
-    
+
  #endif   
     return ret;
 
